@@ -1,8 +1,11 @@
 NAME = philo
 
+TEST_CMD  = ./$(NAME) "debug"
+
 # Source files
-SRC = src/utils_ft_atof.c src/events.c src/main.c src/complex_math.c \
-		src/too_complex_fractals.c src/initialise_and_exit.c
+SRC = src/main.c src/ft_atoi.c src/ft_isdigit.c src/ft_strncmp.c \
+		src/actions.c src/init.c src/monitor.c src/threads.c \
+		src/utils.c
 		
 # Object files
 OBJ =$(SRC:.c=.o)
@@ -14,7 +17,7 @@ DEP = $(OBJ:.o=.d)
 -include $(ALL_DEP)
 
 # Compiler and Flags(-MMD generate dependency files to update if .h files are updated -MP prevents errors for .h)
-CC = cc
+CC = cc -g3
 INCLUDE = -I./include/
 CFLAGS = -Wall -Wextra -Werror -MMD -MP $(INCLUDE)
 
@@ -28,6 +31,12 @@ $(NAME):
 	    $(CC) $(OBJ) -o $(NAME)
 	    @echo "creating philo"
 
+#run with valgrind
+testv: $(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all
+
+#run with fsantiser
+testfs: $(NAME) -fsanitize=address -g
 # Compile .c files to .o files and generate dependency files
 src/%.o: src/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@

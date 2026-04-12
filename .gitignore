@@ -4,7 +4,6 @@ philo
 test
 *.out
 *.gch
-*.supp
 *test*
 *tmp*
 philosophers_project_notes.md

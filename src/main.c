@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ka-tan <ka-tan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:42 by ka-tan            #+#    #+#             */
-/*   Updated: 2025/12/05 14:47:24 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/04/11 19:14:06 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,8 @@
 void	print_instructions(void)
 {
 	printf("Usage should be:\n");
-	printf("<no._of_philo> <time_to_die> <time_to_eat> <time_to_sleep> <[optional]number_of_times_each_philosopher_must_eat>\n");
-}
-
-int	is_valid_double(char *str)
-{
-	int	i;
-	int	has_digit;
-
-	i = 0;
-	has_digit = 0;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i])
-	{
-		if (str[i] == '.' && str[i + 1] != '\0')
-			i++;
-		if (!ft_isdigit(str[i]))
-			return (0);
-		has_digit = 1;
-		i++;
-	}
-	return (has_digit);
+	printf("<no._of_philo> <time_to_die> <time_to_eat> <time_to_sleep>"); 
+	printf("<[optional]number_of_times_each_philosopher_must_eat>\n");
 }
 
 // checks if is mandelbrot or julia, whether parameters keyed in is correct
@@ -59,14 +39,6 @@ int	parse_args(t_data *data, int argc, char **argv)
 		return (1);
 	}
 	return (0);
-}
-
-// sets up hooks, that is start "looking out" for the various input
-void	setup_hooks(t_data *data)
-{
-	mlx_hook(data->win, KeyPress, KeyPressMask, handle_key, data);
-	mlx_hook(data->win, ButtonPress, ButtonPressMask, handle_mouse, data);
-	mlx_hook(data->win, DestroyNotify, 0, handle_close, data);
 }
 
 int	main(int argc, char **argv)

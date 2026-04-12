@@ -1,27 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/03 00:50:08 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/12 19:15:17 by ka-tan           ###   ########.fr       */
+/*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
+/*   Updated: 2026/04/12 20:28:19 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "../include/philo.h"
 
-# include <unistd.h>
-# include <limits.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <stddef.h>
-# include <sys/time.h>
-# include <pthread.h>
-
-typedef struct t_philo;
 typedef struct s_table // whole restaurant; stores info that philos need to know
 {
 	int             num_philos;
@@ -53,6 +43,39 @@ typedef struct s_philo // stores things specific to 1 philos
 	t_table           *table;
 }	t_philo;
 
+void	init_philo(t_shell *shell, char **env)
+{
+	shell->debug = 0;
+	shell->ast = NULL;
+	shell->tokens = NULL;
+	shell->status = 0;
+	shell->should_exit = 0;
+	shell->exit_code = 0;
+	shell->env = dup_env(env);
+	shell->export = dup_env(env);
+	if (!shell->env || !shell->export)
+		exit(EXIT_FAILURE);
+}
 
+void	ft_strarr_free(char **arr)
+{
+	int	i;
 
-#endif
+	i = 0;
+	while (arr && arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+void	free_shell(t_shell *shell)
+{
+	ft_strarr_free(shell->env);
+	ft_strarr_free(shell->export);
+	if (shell->ast)
+		free_ast(shell->ast);
+	if (shell->tokens)
+		free_token_list(shell->tokens);
+}
