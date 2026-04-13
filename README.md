@@ -200,13 +200,16 @@ References used to understand the project topic:
 
 - **Dining Philosophers Problem** - overview of the classic concurrency problem
 	https://youtu.be/FYUi-u7UWgw?si=Zyj2PtbOu7kjfB73
-- **Multithreading in C Programming** - understanding `pthread_create`, `pthread_join`, and shared memory
+- **Introduction To Threads (pthreads)** - understanding `pthread_create`, `pthread_join`, and shared memory
 	https://youtu.be/ldJ8WGZVXZk?si=Pob4iJJDmuyovqW-
+- **Short introduction to threads (pthreads)** - https://youtu.be/d9s_d28yJq0?si=9H1YXeY1t0g9eVRw
 - **Multithreading vs Multiprocessing** - https://youtu.be/PgDaJEjlBuI?si=ZipVwPLfujuvr3WB
 - **Concurrency vs Parallerism** - https://youtu.be/RlM9AfWf1WU?si=FHJ61dVyrrKsxj0q
 - **Mutex lock** - understanding mutual exclusion and critical sections
 	https://youtu.be/9axu8CUvOKY?si=10_3IHeio6AXwBdB
-	
+
+
+
 AI was used for:
 - clarifying concepts such as **threads, mutexes, race conditions, deadlocks, and starvation**
 - notebook LLM to review concepts and strengthened concepts in an interactive/podcast

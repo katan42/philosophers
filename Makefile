@@ -1,6 +1,6 @@
 NAME = philo
 
-TEST_CMD  = ./$(NAME) "debug"
+TEST_CMD  = ./$(NAME) 5 800  200 200
 
 # Source files
 SRC = src/main.c src/ft_atoi.c src/ft_isdigit.c src/ft_strncmp.c \
@@ -14,12 +14,12 @@ OBJ =$(SRC:.c=.o)
 DEP = $(OBJ:.o=.d)
 
 # Include .d files only if they exists ignore otherwise
--include $(ALL_DEP)
+-include $(DEP)
 
 # Compiler and Flags(-MMD generate dependency files to update if .h files are updated -MP prevents errors for .h)
-CC = cc -g3
+CC = cc
 INCLUDE = -I./include/
-CFLAGS = -Wall -Wextra -Werror -MMD -MP $(INCLUDE)
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -g3 -pthread $(INCLUDE)
 
 # sets default target
 .DEFAULT_GOAL := all
@@ -27,16 +27,18 @@ CFLAGS = -Wall -Wextra -Werror -MMD -MP $(INCLUDE)
 # build the target $(NAMES)
 all: $(NAME)
 
-$(NAME):
-	    $(CC) $(OBJ) -o $(NAME)
-	    @echo "creating philo"
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@echo "creating philo"
 
-#run with valgrind
+#run with valgrind and run with args in test_CMD
 testv: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all
+	valgrind --leak-check=full --show-leak-kinds=all $(TEST_CMD)
 
-#run with fsantiser
-testfs: $(NAME) -fsanitize=address -g
+#run with fsantiser and run with args in test_CMD
+testfs: fclean
+	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -g" all $(TEST_CMD)
+	
 # Compile .c files to .o files and generate dependency files
 src/%.o: src/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -55,5 +57,5 @@ fclean: clean
 re: fclean all
 
 # Phony targets (commands and not files)
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re testv testfs
 
