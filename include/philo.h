@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:08 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/13 15:18:55 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/04/16 14:14:36 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ struct s_table // whole restaurant; stores info that philos need to know
 	pthread_mutex_t *forks;
 	pthread_mutex_t print_mutex;
 	pthread_mutex_t stop_mutex;
-	t_philo			*philos;
+	t_philo			*philo;
 };
 
 struct s_philo // stores things specific to 1 philos

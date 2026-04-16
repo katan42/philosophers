@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/12 20:28:19 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/04/16 17:04:29 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,36 @@ typedef struct s_philo // stores things specific to 1 philos
 	t_table           *table;
 }	t_philo;
 
-void	init_philo(t_shell *shell, char **env)
+void	init_table(t_table *table, char **argv)
 {
-	shell->debug = 0;
-	shell->ast = NULL;
-	shell->tokens = NULL;
-	shell->status = 0;
-	shell->should_exit = 0;
-	shell->exit_code = 0;
-	shell->env = dup_env(env);
-	shell->export = dup_env(env);
-	if (!shell->env || !shell->export)
-		exit(EXIT_FAILURE);
+	int i;
+
+	table->num_philos = ft_atoi(argv[1]);
+	table->time_to_die = ft_atoi(argv[2]);
+	table->time_to_eat = ft_atoi(argv[3]);
+	table->time_to_sleep = ft_atoi(argv[4]);
+	if (argv[5])
+		table->must_eat_count = ft_atoi(argv[5]);
+	else
+		table->must_eat_count = -1;
+	table->stop = 0;
+	table->start_time = 0;
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philos);
+	if (!table->forks)
+		return ;
+	i = 0;
+	while (i < table->num_philos)
+	{
+		pthread_mutex_init(&table->forks[i], NULL);
+		i++;
+	}
+	pthread_mutex_init(&table->print_mutex, NULL);
+	pthread_mutex_init(&table->stop_mutex, NULL);
+	table->philo = malloc(sizeof(t_philo) * table->num_philos);
+	
 }
+
+void	init_philos(t_philo *philo)
 
 void	ft_strarr_free(char **arr)
 {
