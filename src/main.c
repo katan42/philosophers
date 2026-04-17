@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:42 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/16 15:42:00 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/04/17 21:30:48 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_instructions(void)
 	printf("<[optional]number_of_times_each_philosopher_must_eat>\n");
 }
 
-int	check_args(t_table *table, int argc, char **argv)
+int	check_args(int argc, char **argv)
 {
 	if (!ft_is_digit(ft_atoi(argv[1])))
 	{
@@ -53,23 +53,23 @@ int	main(int argc, char **argv)
 	t_table	table;
 	t_philo philo;
 
-	if (argc < 5 || argc > 6)
+	if (argc != 5 || argc != 6)
 		return (print_instructions(), 1);
-	init_table(&table);
-	if (!check_args(&data, argc, argv))
+	if (!check_args(argc, argv))
 		return (print_instructions(), 1);
-	if (!init_mlx(&data))
-	{
-		ft_printf("Error\n");
-		return (1);
-	}
-	setup_hooks(&data);
-	render_fractal(&data);
-	mlx_loop(data.mlx);
+	if (!init_table(&table, &argv))
+		return (printf("Error\n"), 1);
+	if (!init_philos(&table, &philo))
+		return (printf("Error\n"), cleanup(table), 1);
+	if (!creating_threads(&table))
+		return (printf("Error\n"), cleanup(table), 1);
+	??
+	joining_threads(&table);
+	cleanup(&table);
 	return (0);
 }
 
-/* 
+
 void	*print_instructions(void *arg)
 {
 	(void)arg;
@@ -93,5 +93,4 @@ int main(int argc, char **argv)
 	pthread_join(t1,NULL);
 	pthread_join(t2,NULL);
 	return(0);
-
-} */
+}
