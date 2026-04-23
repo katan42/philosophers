@@ -6,8 +6,15 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/12 19:16:53 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/04/23 18:18:58 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+int	shld_stop(t_table *table)
+{
+	int	stop;
+
+	pthread_mutex_lock(&table->)
+}

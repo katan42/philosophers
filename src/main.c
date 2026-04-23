@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:42 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/17 21:30:48 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/04/23 18:15:24 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,24 @@ void	print_instructions(void)
 {
 	printf("Usage should be:\n");
 	printf("<no._of_philo> <time_to_die> <time_to_eat> <time_to_sleep>"); 
-	printf("<[optional]number_of_times_each_philosopher_must_eat>\n");
+	printf(" <[optional]number_of_times_each_philosopher_must_eat>\n");
 }
 
-int	check_args(int argc, char **argv)
+int	check_args(char **argv)
 {
-	if (!ft_is_digit(ft_atoi(argv[1])))
+	if (!is_positive_number(argv[1]))
 	{
 		printf("Error: Invalid number of philosophers\n");
 		return (1);
 	}
-	if (!ft_is_digit(ft_atoi(argv[2])) || !ft_is_digit(ft_atoi(argv[3])) || !ft_is_digit(ft_atoi(argv[4])))
+	if (!is_positive_number(argv[2]) || !is_positive_number(argv[3]) || !is_positive_number(argv[4]))
 	{
 		printf("Error: Invalid time\n");
 		return (1);
 	}
-	if (argv[5])
+	if (argv[5] && !is_positive_number(argv[5]))
 	{
-		if (!!ft_is_digit(ft_atoi(argv[5])))
-			printf("Error: Invalid number to times each philosopher must eat\n");
+		printf("Error: Invalid number to times each philosopher must eat\n");
 		return (1);
 	}
 	return (0);
@@ -51,46 +50,26 @@ int	check_args(int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_table	table;
-	t_philo philo;
 
-	if (argc != 5 || argc != 6)
+	if (argc != 5 && argc != 6)
 		return (print_instructions(), 1);
-	if (!check_args(argc, argv))
+	if (check_args(argv))
 		return (print_instructions(), 1);
-	if (!init_table(&table, &argv))
+	if (init_table(&table, argv))
 		return (printf("Error\n"), 1);
-	if (!init_philos(&table, &philo))
-		return (printf("Error\n"), cleanup(table), 1);
-	if (!creating_threads(&table))
-		return (printf("Error\n"), cleanup(table), 1);
+	if (init_philos(&table))
+		return (printf("Error\n"), 1);
+	if (creating_threads(&table))
+		return (printf("Error\n"), 1);
 	??
-	joining_threads(&table);
+	/* TODO:
+- harden thread creation failure cleanup
+- harden join failure cleanup
+- verify all partial cleanup paths
+*/
+	if (joining_threads(&table))
+		return (printf("Error\n"), 1);
 	cleanup(&table);
 	return (0);
 }
 
-
-void	*print_instructions(void *arg)
-{
-	(void)arg;
-	printf("Usage should be:\n");
-	printf("<no._of_philo> <time_to_die> <time_to_eat> <time_to_sleep> ");
-	printf("<[optional]number_of_times_each_philosopher_must_eat>\n");
-	sleep(3);
-	printf("Ending thread\n");
-	return (NULL);
-}
-
-int main(int argc, char **argv)
-{
-	pthread_t t1, t2;
-
-	(void)argc;
-	(void)argv;
-	if (pthread_create(&t1,NULL, &print_instructions, NULL) != NULL)
-		return (1);
-	pthread_create(&t2,NULL, &print_instructions, NULL);
-	pthread_join(t1,NULL);
-	pthread_join(t2,NULL);
-	return(0);
-}

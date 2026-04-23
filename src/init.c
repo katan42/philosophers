@@ -6,13 +6,13 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/17 21:18:02 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/04/23 18:05:23 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static void parse_table_args(t_table *table, char **argv)
+static void	parse_table_args(t_table *table, char **argv)
 {
 	table->num_philos = ft_atoi(argv[1]);
 	table->time_to_die = ft_atoi(argv[2]);
@@ -24,86 +24,73 @@ static void parse_table_args(t_table *table, char **argv)
 		table->must_eat_count = -1;
 }
 
+int	init_forks(t_table *table)
+{
+	int	i;
+
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philos);
+	if (!table->forks)
+		return (1);
+	i = 0;
+	while (i < table->num_philos)
+	{
+		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
+		{
+			destroying_forks(table, i);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	init_table(t_table *table, char **argv)
 {
-	int i;
 
 	parse_table_args(table, argv);
 	table->stop = 0;
 	table->start_time = 0;
-	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philos);
-	if (!table->forks)
-		return;
-	i = 0;
-	while (i < table->num_philos)
-	{
-		pthread_mutex_init(&table->forks[i], NULL);
-		i++;
-	}
+	if (init_forks(table))
+		return (1);
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
-		return (1);
+		return (destroying_forks(table, table->num_philos), 1);
 	if (pthread_mutex_init(&table->stop_mutex, NULL) != 0)
+	{
+		destroying_forks(table, table->num_philos);
+		pthread_mutex_destroy(&table->print_mutex);
 		return (1);
+	}
 	table->philo = malloc(sizeof(t_philo) * table->num_philos);
 	if (!table->philo)
+	{
+		destroying_forks(table, table->num_philos);
+		pthread_mutex_destroy(&table->print_mutex);
+		pthread_mutex_destroy(&table->stop_mutex);
 		return (1);
+	}
 	return (0);
 }
 
-int	init_philos(t_table *table, t_philo *philo)
+//philo id = i+1 as 1st philo is 1
+int	init_philos(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < table->num_philos)
 	{
-		table->philo[i].id = i + 1; // because first philo is 1
+		table->philo[i].id = i + 1;
 		table->philo[i].meals_eaten = 0;
 		table->philo[i].last_meal_time = 0;
 		table->philo[i].left_fork = &table->forks[i];
 		table->philo[i].right_fork = &table->forks[(i + 1) % table->num_philos];
 		table->philo[i].table = table;
-		pthread_mutex_init(&table->philo[i].meal_mutex, NULL);
+		if (pthread_mutex_init(&table->philo[i].meal_mutex, NULL) != 0)
+		{
+			destroying_philo_mutexes(table, i);
+			return (1);
+		}
 		i++;
 	}
-}
-
-/* void ft_strarr_free(char **arr)
-{
-	int i;
-
-	i = 0;
-	while (arr && arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
-
-void free_shell(t_shell *shell)
-{
-	ft_strarr_free(shell->env);
-	ft_strarr_free(shell->export);
-	if (shell->ast)
-		free_ast(shell->ast);
-	if (shell->tokens)
-		free_token_list(shell->tokens);
-} */
-
-void	cleanup(t_table *table)
-{
-	int i;
-
-	i = 0;
-	while(i < table->num_philos)
-	{
-		pthread_mutex_destroy(&table->forks[i]);
-		pthread_mutex_destroy(&table->philo[i].meal_mutex);
-		i++;
-	}
-	pthread_mutex_destroy(&table->print_mutex);
-	pthread_mutex_destroy(&table->stop_mutex);
-	free(table->forks);
-	free(table->philo);
+	return (0);
 }

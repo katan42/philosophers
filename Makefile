@@ -1,11 +1,12 @@
 NAME = philo
 
 TEST_CMD  = ./$(NAME) 5 800  200 200
+TEST_CMD2  = ./$(NAME) 1 800 200 200 
 
 # Source files
-SRC = src/main.c src/ft_atoi.c src/ft_isdigit.c src/ft_strncmp.c \
+SRC = src/main.c src/ft_atoi.c src/ft_strncmp.c \
 		src/actions.c src/init.c src/monitor.c src/threads.c \
-		src/utils.c
+		src/utils.c src/cleanup.c
 		
 # Object files
 OBJ =$(SRC:.c=.o)
@@ -33,7 +34,16 @@ $(NAME): $(OBJ)
 
 #run with valgrind and run with args in test_CMD
 testv: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all $(TEST_CMD)
+	-valgrind --leak-check=full --show-leak-kinds=all $(TEST_CMD)
+	-valgrind --leak-check=full --show-leak-kinds=all $(TEST_CMD2)
+
+testh: $(NAME)
+	-valgrind --tool=helgrind $(TEST_CMD)
+	-valgrind --tool=helgrind $(TEST_CMD2)
+
+testd: $(NAME)
+	-valgrind --tool=drd $(TEST_CMD)
+	-valgrind --tool=drd $(TEST_CMD2)
 
 #run with fsantiser and run with args in test_CMD
 testfs: fclean
@@ -57,5 +67,5 @@ fclean: clean
 re: fclean all
 
 # Phony targets (commands and not files)
-.PHONY: all clean fclean re testv testfs
+.PHONY: all clean fclean re testv testfs testh testd
 
