@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:14:55 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/23 16:55:19 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/09 21:10:13 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,29 @@ int	is_positive_number(char *str)
 	}
 	return (1);
 }
+
+//L suffix makes it explicit & keeps it long aft multiplying(avoids overflow)
+//The literal 1000 w/o a suffix is an int
+long	get_time_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
+}
+
+//confirm sim cont bef print
+void	print_state(t_philo *philo, char *str)
+{
+	t_table	*table;
+	long	sim_time;
+
+	table = philo->table;
+	sim_time = get_time_ms() - table->start_time;
+	pthread_mutex_lock(&table->print_mutex);
+	if (!shld_stop(table))
+		printf("%ld %d %s\n", sim_time, philo->id, str);
+	pthread_mutex_unlock(&table->print_mutex);
+	return ;
+}
+

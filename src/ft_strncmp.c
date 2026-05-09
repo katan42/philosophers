@@ -6,12 +6,13 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:43:11 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/12 19:15:33 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/09 17:25:05 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+//throw away ft_strncmp if not helpful or add in .h
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;

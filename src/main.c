@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:42 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/23 18:15:24 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/09 22:45:23 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 // #include <stddef.h>
 // #include <sys/time.h>
 // #include <pthread.h>
-
 
 void	print_instructions(void)
 {
@@ -58,18 +57,11 @@ int	main(int argc, char **argv)
 	if (init_table(&table, argv))
 		return (printf("Error\n"), 1);
 	if (init_philos(&table))
-		return (printf("Error\n"), 1);
+		return (cleanup(&table), 1);
 	if (creating_threads(&table))
-		return (printf("Error\n"), 1);
-	??
-	/* TODO:
-- harden thread creation failure cleanup
-- harden join failure cleanup
-- verify all partial cleanup paths
-*/
+		return (cleanup(&table), 1);
 	if (joining_threads(&table))
-		return (printf("Error\n"), 1);
+		return (cleanup(&table), 1);
 	cleanup(&table);
 	return (0);
 }
-

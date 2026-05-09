@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/23 18:05:23 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/09 20:38:45 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	init_forks(t_table *table)
 
 int	init_table(t_table *table, char **argv)
 {
-
 	parse_table_args(table, argv);
 	table->stop = 0;
 	table->start_time = 0;
