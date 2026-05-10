@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:14:55 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/09 21:10:13 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 15:25:17 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ void	print_state(t_philo *philo, char *str)
 	pthread_mutex_unlock(&table->print_mutex);
 	return ;
 }
-

@@ -1,11 +1,10 @@
 NAME = philo
 
-TEST_CMD  = ./$(NAME) 5 800  200 200
-TEST_CMD2  = ./$(NAME) 1 800 200 200 
+ARGS  = 5 800  200 200
+ARGS2  = 1 800 200 200 
 
 # Source files
-SRC = src/main.c src/ft_atoi.c src/ft_strncmp.c \
-		src/actions.c src/init.c src/monitor.c src/threads.c \
+SRC = src/main.c src/ft_atoi.c src/actions.c src/init.c src/monitor.c src/threads.c \
 		src/utils.c src/cleanup.c
 		
 # Object files
@@ -30,24 +29,36 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-	@echo "creating philo"
+	@echo "✓ built $(NAME)"
 
-#run with valgrind and run with args in test_CMD
+#run with args
+run: $(NAME)
+	./$(NAME) $(ARGS)
+
+run2: $(NAME)
+	./$(NAME) $(ARGS2)
+
+#run with valgrind and run with args
 testv: $(NAME)
-	-valgrind --leak-check=full --show-leak-kinds=all $(TEST_CMD)
-	-valgrind --leak-check=full --show-leak-kinds=all $(TEST_CMD2)
+	-valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(ARGS)
+	-valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(ARGS2)
 
 testh: $(NAME)
-	-valgrind --tool=helgrind $(TEST_CMD)
-	-valgrind --tool=helgrind $(TEST_CMD2)
+	-valgrind --tool=helgrind ./$(NAME) $(ARGS)
+	-valgrind --tool=helgrind ./$(NAME) $(ARGS2)
 
 testd: $(NAME)
-	-valgrind --tool=drd $(TEST_CMD)
-	-valgrind --tool=drd $(TEST_CMD2)
+	-valgrind --tool=drd ./$(NAME) $(ARGS)
+	-valgrind --tool=drd ./$(NAME) $(ARGS2)
 
 #run with fsantiser and run with args in test_CMD
 testfs: fclean
-	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -g" all $(TEST_CMD)
+	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -g" all
+	./$(NAME) $(ARGS)
+
+testfs2: fclean
+	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -g" all
+	./$(NAME) $(ARGS2)
 	
 # Compile .c files to .o files and generate dependency files
 src/%.o: src/%.c
@@ -55,17 +66,15 @@ src/%.o: src/%.c
 
 # Remove object and dependency files
 clean:
-	@echo "cleaning philo .o and .d files"
-	@rm -f $(OBJ) $(DEP)
+	rm -f $(OBJ) $(DEP)
 
 # Remove program
 fclean: clean
-	@echo "removing philo"
-	@rm -f $(NAME) 
+	rm -f $(NAME) 
 	
 # Delete everything and rebuilt from scratch
 re: fclean all
 
 # Phony targets (commands and not files)
-.PHONY: all clean fclean re testv testfs testh testd
+.PHONY: all clean fclean re testv testfs testh testd run run2 testfs2
 

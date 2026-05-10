@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/09 23:10:18 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 16:16:54 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,38 @@ static void	*lone_philo(t_philo *philo)
 	return (NULL);
 }
 
+// init every philosopher's last_meal_time 
+// Called bef pthread_create so monitor never sees uninitialised value. 
+static void	init_meal_times(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->num_philos)
+	{
+		table->philo[i].last_meal_time = table->start_time;
+		i++;
+	}
+}
+
 //loop through all the philos and create thread
 //if pthread_create fails halfway, some threads are already running.
 //cannot just return and free everything immediately, as those threads 
 //may still access freed resources
 //so wait for alrd-created thread to finish with thread_join
-int creating_threads(t_table *table)
+int	creating_threads(t_table *table)
 {
-	int i;
+	int	i;
 
 	table->start_time = get_time_ms();
+	init_meal_times(table);
 	if (pthread_create(&table->monitor_thread, NULL, monitor_loop, table) != 0)
 		return (1);
 	i = 0;
 	while (i < table->num_philos)
 	{
 		if (pthread_create(&table->philo[i].thread, NULL, routine,
-			&table->philo[i]) != 0)
+				&table->philo[i]) != 0)
 		{
 			set_stop_flag(table);
 			while (i > 0)
@@ -56,7 +71,7 @@ int creating_threads(t_table *table)
 
 int	joining_threads(t_table *table)
 {
-	int i;
+	int	i;
 
 	if (pthread_join(table->monitor_thread, NULL) != 0)
 		return (1);
@@ -77,8 +92,8 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->num_philos == 1)
 		return (lone_philo(philo));
-	if (philo->id % 2 == 1)
-		do_think(philo);
+	if (philo->id % 2 == 0)
+		do_sleep(philo, philo->table->time_to_eat / 2);
 	while (!shld_stop(philo->table))
 	{
 		take_fork(philo);

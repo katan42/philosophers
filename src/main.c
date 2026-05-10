@@ -6,23 +6,16 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:42 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/09 22:45:23 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 15:27:52 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-// #include <unistd.h>
-// #include <limits.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <stddef.h>
-// #include <sys/time.h>
-// #include <pthread.h>
 
 void	print_instructions(void)
 {
 	printf("Usage should be:\n");
-	printf("<no._of_philo> <time_to_die> <time_to_eat> <time_to_sleep>"); 
+	printf("<no._of_philo> <time_to_die> <time_to_eat> <time_to_sleep>");
 	printf(" <[optional]number_of_times_each_philosopher_must_eat>\n");
 }
 
@@ -33,7 +26,8 @@ int	check_args(char **argv)
 		printf("Error: Invalid number of philosophers\n");
 		return (1);
 	}
-	if (!is_positive_number(argv[2]) || !is_positive_number(argv[3]) || !is_positive_number(argv[4]))
+	if (!is_positive_number(argv[2]) || !is_positive_number(argv[3])
+		|| !is_positive_number(argv[4]))
 	{
 		printf("Error: Invalid time\n");
 		return (1);

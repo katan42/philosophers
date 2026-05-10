@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/09 22:49:14 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 15:22:10 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	*monitor_loop(void *arg)
 			set_stop_flag(table);
 			return (NULL);
 		}
-		do_sleep(&table->philo[i], 500);
+		usleep(500);
 	}
 	return (NULL);
 }

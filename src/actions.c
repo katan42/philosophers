@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:10:29 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/09 22:52:22 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 16:20:56 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	do_sleep(t_philo *philo, long slp_duration)
 	}
 }
 
+//in odd, one philo will complete faster than the others, so let it sleep a bit to allow others to catch up
+//and prevent it from always taking the forks first and causing starvation
 void	do_think(t_philo *philo)
 {
 	print_state(philo, "is thinking");

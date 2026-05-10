@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:14:43 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/04/12 19:14:49 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 10:21:32 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,43 +49,3 @@ int	ft_atoi(const char *str)
 	}
 	return (sign * result);
 }
-
-// int	main(void)
-// {
-// 	char	str1[] = "     123";
-// 	char	str2[] = "-456";
-// 	char	str3[] = "abc123";
-// 	char	str4[] = "+789";
-// 	char	str5[] = "+++--8987";
-// 	char	str6[] = "4547545+-+-";
-
-// 	printf("      123: %d\n", ft_atoi(str1));
-// 	printf("      123: %d\n", atoi(str1));
-// 	printf("-456: %d\n", ft_atoi(str2));
-// 	printf("-456: %d\n", atoi(str2));
-// 	printf("abc123: %d\n", ft_atoi(str3));
-// 	printf("abc123: %d\n", atoi(str3));
-// 	printf("+789: %d\n", ft_atoi(str4));
-// 	printf("+789: %d\n", atoi(str4));
-// 	printf("+++--8987: %d\n", ft_atoi(str5));
-// 	printf("+++--8987: %d\n", atoi(str5));
-// 	printf("4547545+-+-: %d\n", ft_atoi(str6));
-// 	printf("4547545+-+-: %d\n\n", atoi(str6));
-// 	printf("INT_MAX: %d\n", ft_atoi("2147483647"));
-// 	printf("INT_MAX: %d\n", atoi("2147483647"));
-// 	printf("INT_MIN: %d\n", ft_atoi("-2147483648"));
-// 	printf("INT_MIN: %d\n\n", atoi("-2147483648"));
-// 	// borderline
-// 	printf("MAX borderline: %d\n", ft_atoi("2147483646"));
-// 	printf("MAX borderline: %d\n", atoi("2147483646"));
-// 	printf("MIN borderline: %d\n", ft_atoi("-2147483647"));
-// 	printf("MIN borderline: %d\n\n", atoi("-2147483647"));
-// 	// Positive overflow
-// 	printf("Overflow +1: %d\n", ft_atoi("2147483648"));
-// 	printf("Overflow +2: %d\n", ft_atoi("9999999999"));
-// 	printf("Overflow +3: %d\n", ft_atoi("3000000000"));
-// 	// Negative overflow
-// 	printf("Overflow -1: %d\n", ft_atoi("-2147483649"));
-// 	printf("Overflow -2: %d\n", ft_atoi("-9999999999"));
-// 	printf("Overflow -3: %d\n", ft_atoi("-3000000000"));
-// }
