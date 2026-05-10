@@ -1,7 +1,7 @@
 NAME = philo
 
-ARGS  = 5 800  200 200
-ARGS2  = 1 800 200 200 
+ARGS  = 5 810 200 100 10
+ARGS2  = 1 801 200 200 10
 
 # Source files
 SRC = src/main.c src/ft_atoi.c src/actions.c src/init.c src/monitor.c src/threads.c \
@@ -39,25 +39,31 @@ run2: $(NAME)
 	./$(NAME) $(ARGS2)
 
 #run with valgrind and run with args
-testv: $(NAME)
+testv: fclean
+	$(MAKE) CFLAGS="$(CFLAGS) -g"
 	-valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(ARGS)
+
+testv2: fclean
+	$(MAKE) CFLAGS="$(CFLAGS) -g"
 	-valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(ARGS2)
 
-testh: $(NAME)
+testh: fclean
+	$(MAKE) CFLAGS="$(CFLAGS) -g"
 	-valgrind --tool=helgrind ./$(NAME) $(ARGS)
 	-valgrind --tool=helgrind ./$(NAME) $(ARGS2)
 
-testd: $(NAME)
+testd: fclean
+	$(MAKE) CFLAGS="$(CFLAGS) -g"
 	-valgrind --tool=drd ./$(NAME) $(ARGS)
 	-valgrind --tool=drd ./$(NAME) $(ARGS2)
 
 #run with fsantiser and run with args in test_CMD
 testfs: fclean
-	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -g" all
+	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=thread -g" all
 	./$(NAME) $(ARGS)
 
 testfs2: fclean
-	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -g" all
+	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=thread -g" all
 	./$(NAME) $(ARGS2)
 	
 # Compile .c files to .o files and generate dependency files

@@ -168,6 +168,47 @@ make fclean
 make re
 ```
 
+6. Run with Valgrind leak check
+```bash
+valgrind --leak-check=full --show-leak-kinds=all ./philo <args>
+```
+
+This is useful for checking that all heap memory is properly freed before the program exits. The evaluation sheet explicitly says you must verify the absence of memory leaks, and tools such as `valgrind` are allowed for that purpose.
+
+7. Run with Helgrind
+```bash
+valgrind --tool=helgrind ./philo <args>
+```
+
+`helgrind` is very useful for detecting **data races**, incorrect mutex usage, and synchronization mistakes. This matters a lot for Philosophers because the subject requires that the program must not have any data races. The evaluation sheet also explicitly says that evaluators may use `valgrind --tool=helgrind`, and any data race is an immediate stop.
+
+8. Run with DRD
+```bash
+valgrind --tool=drd ./philo <args>
+```
+
+`drd` is another Valgrind concurrency tool. It also helps detect thread synchronization issues and data races, so it is a good second check if you want more confidence in your mutex protection. The evaluation sheet specifically mentions `--tool=drd` as an allowed checker for race conditions.
+
+9. Run with ThreadSanitizer (`-fsanitize=thread`)
+```bash
+cc -Wall -Werror -Wextra -fsanitize=thread -g
+./philo <args>
+```
+
+This compiles the program with **ThreadSanitizer**, which can catch data races at runtime. It is not part of the official subject list of allowed project functions, but it is a very useful development tool while debugging your own code. The main requirement you are checking here is still the same: the final program must have **no data races**.
+
+### A small note about test arguments
+When using `helgrind`, `drd`, or `-fsanitize=thread`, it is usually better to test with smaller, stable cases first, such as:
+
+```bash
+./philo 1 800 200 200
+./philo 5 800 200 200
+./philo 5 800 200 200 7
+./philo 4 410 200 200
+./philo 4 310 200 100
+```
+
+
 ---
 
 ## ▶️ Usage examples
@@ -214,8 +255,7 @@ AI was used for:
 - clarifying concepts such as **threads, mutexes, race conditions, deadlocks, and starvation**
 - notebook LLM to review concepts and strengthened concepts in an interactive/podcast
 
-
 ---
 ## 🌱 Final thought
+After starting this project, I realised that concepts like concurrency and parallelism show up much more often than I had previously noticed in many parts of computing. Working on Philosophers helped me see how important synchronization, timing, and shared resource management really are, and why these ideas matter so much in real systems.
 
-...

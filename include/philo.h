@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:08 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/09 22:52:23 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 18:09:20 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ struct s_philo // stores things specific to 1 philos
 void	take_fork(t_philo *philo);
 void	put_forks(t_philo *philo);
 void	do_eat(t_philo *philo);
-void	do_sleep(t_philo *philo, long slp_duration);
+void	do_sleep(t_philo *philo);
 void	do_think(t_philo *philo);
 
 //cleanup.c
@@ -93,5 +93,6 @@ int		ft_isdigit(int c);
 int		is_positive_number(char *str);
 void	print_state(t_philo *philo, char *str);
 long	get_time_ms(void);
+void	ft_usleep(t_philo *philo, long slp_duration);
 
 #endif

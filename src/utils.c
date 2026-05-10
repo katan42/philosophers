@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:14:55 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/10 15:25:17 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 18:09:57 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,18 @@ void	print_state(t_philo *philo, char *str)
 		printf("%ld %d %s\n", sim_time, philo->id, str);
 	pthread_mutex_unlock(&table->print_mutex);
 	return ;
+}
+
+//as usleep is a slp at least time, & nt slp exactly
+void	ft_usleep(t_philo *philo, long slp_duration)
+{
+	long	time_to_wake;
+
+	time_to_wake = get_time_ms() + slp_duration;
+	while (!shld_stop(philo->table))
+	{
+		if (get_time_ms() >= time_to_wake)
+			break ;
+		usleep(500);
+	}
 }

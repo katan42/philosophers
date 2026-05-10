@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:10:29 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/10 16:20:56 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 19:11:10 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,17 @@ void	do_eat(t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meal_mutex);
 	print_state(philo, "is eating");
-	do_sleep(philo, philo->table->time_to_eat);
+	ft_usleep(philo, philo->table->time_to_eat);
 }
 
-//as usleep is a slp at least time, & nt slp exactly
-void	do_sleep(t_philo *philo, long slp_duration)
+void	do_sleep(t_philo *philo)
 {
-	long	time_to_wake;
-
-	time_to_wake = get_time_ms() + slp_duration;
-	while (!shld_stop(philo->table))
-	{
-		if (get_time_ms() >= time_to_wake)
-			break ;
-		usleep(500);
-	}
+	print_state(philo, "is sleeping");
+	ft_usleep(philo, philo->table->time_to_sleep);
 }
 
-//in odd, one philo will complete faster than the others, so let it sleep a bit to allow others to catch up
+//in odd, one philo will complete faster than the others, 
+//so let it sleep a bit to allow others to catch up
 //and prevent it from always taking the forks first and causing starvation
 void	do_think(t_philo *philo)
 {

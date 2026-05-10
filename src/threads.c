@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 19:16:39 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/10 16:16:54 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/10 18:10:52 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	*lone_philo(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	print_state(philo, "has taken a fork");
-	do_sleep(philo, philo->table->time_to_die + 1);
+	ft_usleep(philo, philo->table->time_to_die + 1);
 	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
 }
@@ -93,13 +93,13 @@ void	*routine(void *arg)
 	if (philo->table->num_philos == 1)
 		return (lone_philo(philo));
 	if (philo->id % 2 == 0)
-		do_sleep(philo, philo->table->time_to_eat / 2);
+		ft_usleep(philo, philo->table->time_to_eat / 2);
 	while (!shld_stop(philo->table))
 	{
 		take_fork(philo);
 		do_eat(philo);
 		put_forks(philo);
-		do_sleep(philo, philo->table->time_to_sleep);
+		do_sleep(philo);
 		do_think(philo);
 	}
 	return (NULL);
