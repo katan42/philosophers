@@ -248,6 +248,8 @@ References used to understand the project topic:
 - **Concurrency vs Parallerism** - https://youtu.be/RlM9AfWf1WU?si=FHJ61dVyrrKsxj0q
 - **Mutex lock** - understanding mutual exclusion and critical sections
 	https://youtu.be/9axu8CUvOKY?si=10_3IHeio6AXwBdB
+- **visualising the simulation** - https://nafuka11.github.io/philosophers-visualizer/
+	https://rom98759.github.io/Philosophers-visualizer/
 
 
 
