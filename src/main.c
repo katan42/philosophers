@@ -6,7 +6,7 @@
 /*   By: ka-tan <ka-tan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 00:50:42 by ka-tan            #+#    #+#             */
-/*   Updated: 2026/05/10 15:27:52 by ka-tan           ###   ########.fr       */
+/*   Updated: 2026/05/11 18:18:31 by ka-tan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_instructions(void)
 
 int	check_args(char **argv)
 {
-	if (!is_positive_number(argv[1]))
+	if (!is_positive_number(argv[1]) || (ft_atoi(argv[1]) == 0))
 	{
 		printf("Error: Invalid number of philosophers\n");
 		return (1);
